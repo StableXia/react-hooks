@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>useRef</title>
+  </head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/antd/4.8.5/antd.min.css" />
+  <body>
+    <div id="app"></div>
+  </body>
+  <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/antd/4.8.5/antd.min.js"></script>
+  
+  <script type="text/babel">
+    const { Button } = antd
+
+    function usePrevious(state) {
+      const ref = React.useRef()
+
+      React.useEffect(() => {
+        ref.current = state
+      })
+
+      return ref.current
+    }
+
+    function App() {
+      const [count, setCount] = React.useState(1)
+      const refFromUseRef = React.useRef()
+      const refFromCreateRef = React.createRef()
+      const preCount = usePrevious(count)
+
+      if (!refFromUseRef.current) {
+        refFromUseRef.current = count
+      }
+
+      if (!refFromCreateRef.current) {
+        refFromCreateRef.current = count
+      }
+
+      return (
+        <div>
+          <div>refFromUseRef：{refFromUseRef.current}</div>
+          <div>refFromCreateRef：{refFromCreateRef.current}</div>
+          <div>usePrevious：{preCount}</div>
+          <Button onClick={() => setCount(count + 1)}>click</Button>
+        </div>
+      )
+    }
+
+    ReactDOM.render(
+      <App />,
+      document.getElementById('app')
+    );
+  </script>
+</html>
